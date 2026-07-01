@@ -1,56 +1,108 @@
-/* overall page layout - game on left, leaderboard on right */
+/* ===================== */
+/* BASE STYLES           */
+/* ===================== */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: white;
+  padding: 10px;
+}
+
+/* ===================== */
+/* DESKTOP LAYOUT        */
+/* game left, sidebar right */
+/* ===================== */
+
 .layout {
   display: flex;
+  flex-direction: row;
   gap: 20px;
   justify-content: center;
   margin-top: 20px;
-  font-family: Arial, sans-serif;
 }
 
-/* the 800px game area */
 .game-area {
-  width: 800px;
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-/* the canvas border */
-canvas {
+/* ===================== */
+/* CANVAS                */
+/* ===================== */
+
+/* wrapper scales the canvas to fit any screen */
+.canvas-wrapper {
+  width: 100%;
+  max-width: 800px;
+}
+
+/* canvas fills its wrapper but never exceeds 800px */
+.game-canvas {
+  width: 100%;
+  height: auto;
   border: 2px solid black;
   background: white;
   display: block;
+  /* tell browser the canvas draws at 800x600 internally */
+  aspect-ratio: 800 / 600;
 }
 
-/* start and gameover screens */
+/* ===================== */
+/* START AND GAMEOVER    */
+/* ===================== */
+
 .screen {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 12px;
-  margin-top: 100px;
+  margin-top: 60px;
+  width: 100%;
+  max-width: 400px;
+  padding: 0 20px;
 }
 
-/* leaderboard on the right */
-.sidebar {
-  width: 200px;
+.screen h1 {
+  font-size: 2rem;
 }
 
-/* input boxes */
-input {
-  padding: 6px;
-  font-size: 14px;
+.screen input {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;  /* 16px stops iOS from zooming in on focus */
   font-family: Arial, sans-serif;
+  border: 2px solid black;
 }
 
-/* buttons */
-button {
-  padding: 8px 16px;
+.screen button {
+  width: 100%;
+  padding: 14px;
+  font-size: 16px;
+  font-family: Arial, sans-serif;
+  background: black;
+  color: white;
+  border: none;
   cursor: pointer;
-  font-family: Arial, sans-serif;
 }
 
-/* the track container */
+.screen button:active {
+  background: #333;
+}
+
+/* ===================== */
+/* JOYSTICK SLIDER       */
+/* ===================== */
+
 .slider-container {
-  width: 800px;
+  width: 100%;
+  max-width: 800px;
   margin-top: 12px;
   display: flex;
   align-items: center;
@@ -58,7 +110,6 @@ button {
   gap: 10px;
 }
 
-/* left and right arrow labels */
 .slider-label {
   font-size: 20px;
   font-weight: bold;
@@ -66,11 +117,10 @@ button {
   user-select: none;
 }
 
-/* the actual slider */
 .touch-slider {
   -webkit-appearance: none;
   appearance: none;
-  width: 700px;
+  flex: 1;           /* takes all available space between arrows */
   height: 6px;
   background: black;
   border-radius: 3px;
@@ -78,26 +128,24 @@ button {
   cursor: pointer;
 }
 
-/* the draggable thumb - this is the joystick knob */
+/* the draggable knob */
 .touch-slider::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
   width: 50px;
   height: 50px;
   background: black;
-  border-radius: 50%;           /* makes it a circle */
+  border-radius: 50%;
   border: 4px solid white;
-  box-shadow: 0 0 0 3px black;  /* outer ring effect */
+  box-shadow: 0 0 0 3px black;
   cursor: grab;
 }
 
-/* when actively dragging */
 .touch-slider::-webkit-slider-thumb:active {
   cursor: grabbing;
   background: #333;
 }
 
-/* firefox support */
 .touch-slider::-moz-range-thumb {
   width: 50px;
   height: 50px;
@@ -106,4 +154,67 @@ button {
   border: 4px solid white;
   box-shadow: 0 0 0 3px black;
   cursor: grab;
+}
+
+/* ===================== */
+/* SIDEBAR               */
+/* ===================== */
+
+.sidebar {
+  width: 180px;
+  flex-shrink: 0;
+}
+
+.sidebar h2 {
+  font-size: 1.1rem;
+}
+
+.sidebar ol {
+  padding-left: 18px;
+}
+
+.sidebar li {
+  margin-bottom: 4px;
+  font-size: 0.9rem;
+}
+
+/* ===================== */
+/* MOBILE                */
+/* screen smaller than 600px */
+/* ===================== */
+
+@media (max-width: 600px) {
+
+  /* stack everything vertically on mobile */
+  .layout {
+    flex-direction: column;
+    align-items: center;
+    margin-top: 10px;
+  }
+
+  /* sidebar goes below the game on mobile */
+  .sidebar {
+    width: 100%;
+    max-width: 400px;
+    border-top: 1px solid #ccc;
+    padding-top: 10px;
+    margin-top: 10px;
+  }
+
+  /* bigger touch target for slider knob on mobile */
+  .touch-slider::-webkit-slider-thumb {
+    width: 60px;
+    height: 60px;
+  }
+
+  .touch-slider::-moz-range-thumb {
+    width: 60px;
+    height: 60px;
+  }
+
+  /* bigger buttons on mobile */
+  .screen h1 {
+    font-size: 1.6rem;
+  }
+
 }

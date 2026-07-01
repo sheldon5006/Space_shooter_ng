@@ -133,6 +133,8 @@ export class App implements OnInit {
     // then grab it and start the game loop
     setTimeout(() => {
       const canvas = this.canvasRef.nativeElement;
+      canvas.width = 800;
+      canvas.height = 600;
       this.ctx = canvas.getContext('2d')!;
       this.setupKeyboard();
       this.startAutoFire();   
@@ -229,7 +231,7 @@ export class App implements OnInit {
     // check if any enemy reached the bottom
     for (const en of this.enemies) {
       if (en.y + en.radius >= canvas.height) {
-        debugger;
+       
         this.endGame();
       }
     }

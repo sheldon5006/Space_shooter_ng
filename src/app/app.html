@@ -1,32 +1,26 @@
 <div class="layout">
 
-  <!-- ===================== -->
-  <!-- SCREEN 1: START PAGE  -->
-  <!-- ===================== -->
+  <!-- GAME AREA -->
   <div class="game-area">
 
-    <!-- Show this div only when screen equals 'start' -->
+    <!-- SCREEN 1: START -->
     @if (screen === 'start') {
       <div class="screen">
         <h1>Simple Shooter</h1>
         <p>Enter your name</p>
-
-        <!-- [(ngModel)] means: whatever user types goes into username variable -->
         <input [(ngModel)]="username" placeholder="Player" maxlength="15" />
         <button (click)="startGame()">PLAY</button>
       </div>
     }
 
-    <!-- ===================== -->
     <!-- SCREEN 2: GAME CANVAS -->
-    <!-- ===================== -->
-
-    <!-- Show canvas only when screen equals 'game' -->
     @if (screen === 'game') {
-      <canvas #gameCanvas width="800" height="600"></canvas>
+      <div class="canvas-wrapper">
+       <canvas #gameCanvas class="game-canvas" width="800" height="600"></canvas>
+      </div>
 
-       <!-- joystick style slider -->
-      <div class="slider-container" style="margin-bottom: 15px;">
+      <!-- joystick slider -->
+      <div class="slider-container" style="margin-bottom: 20px;">
         <span class="slider-label">◀</span>
         <input
           type="range"
@@ -39,25 +33,17 @@
         <span class="slider-label">▶</span>
       </div>
 
-      <label style="color: black;">Use the slider to move the player also you can use A and D keys to move the player and SPACE to shoot faster</label>
+         <label style="color: black;">Use the slider to move the player also you can use A and D keys to move the player and SPACE to shoot faster</label>
     }
 
-    <!-- ======================== -->
-    <!-- SCREEN 3: GAME OVER PAGE -->
-    <!-- ======================== -->
-
-    <!-- Show this div only when screen equals 'gameover' -->
+    <!-- SCREEN 3: GAME OVER -->
     @if (screen === 'gameover') {
       <div class="screen">
         <h1>GAME OVER</h1>
-
-        <!-- {{ score }} just prints the score variable here -->
         <p>Score: {{ score }}</p>
-
         <label>Leave a comment</label>
         <input [(ngModel)]="comment" maxlength="100" />
         <button (click)="saveComment()">Save</button>
-
         <br /><br />
         <button (click)="goToStart()">Play Again</button>
       </div>
@@ -65,20 +51,15 @@
 
   </div>
 
-  <!-- ====================== -->
-  <!-- SIDEBAR: LEADERBOARD   -->
-  <!-- ====================== -->
+  <!-- SIDEBAR: LEADERBOARD -->
   <div class="sidebar">
     <h2>High Score</h2>
     <h3>Top 5 Players</h3>
-
     <ol>
-      <!-- Loop through topScores array and print each one -->
       @for (entry of topScores; track entry.username) {
         <li>{{ entry.username }} - {{ entry.score }}</li>
       }
     </ol>
-
     <h3>Last Comment</h3>
     <p>"{{ lastComment }}"</p>
   </div>
