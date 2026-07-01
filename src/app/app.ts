@@ -77,6 +77,11 @@ export class App implements OnInit {
   private keydownHandler!: (e: KeyboardEvent) => void;
   private keyupHandler!: (e: KeyboardEvent) => void;
 
+  // expose player x to the template for the slider
+  player_x = 400;
+  private autoFireInterval: any = null;
+
+
   // ============================
   // SECTION 2: SETUP
   // ============================
@@ -130,6 +135,7 @@ export class App implements OnInit {
       const canvas = this.canvasRef.nativeElement;
       this.ctx = canvas.getContext('2d')!;
       this.setupKeyboard();
+      this.startAutoFire();   
       requestAnimationFrame((t) => this.gameLoop(t));
     }, 50);
   }
@@ -317,9 +323,10 @@ export class App implements OnInit {
   endGame() {
     this.gameRunning = false;  // stops the game loop
     this.removeKeyboard();     // stop listening to keys
+    this.stopAutoFire(); 
     this.screen = 'gameover';  // show game over screen
     this.cdr.detectChanges();
-    
+
     // send score to Flask to save in SQLite
     this.http.post<any>(`${this.apiUrl}/api/save_score`, {
       username: this.username || 'Anonymous',
@@ -353,4 +360,34 @@ export class App implements OnInit {
   goToStart() {
     this.screen = 'start';
   }
+
+  // called every time the slider moves
+  onSliderMove(event: Event) {
+    const input = event.target as HTMLInputElement;
+    // move player to wherever the slider is
+    this.player.x = Number(input.value);
+    this.player_x = this.player.x;
+  }
+
+  // fires 3 bullets per second automatically
+startAutoFire() {
+  // clear any existing interval first
+  this.stopAutoFire();
+
+  // every 333ms = 3 times per second
+  this.autoFireInterval = setInterval(() => {
+    if (this.gameRunning) {
+      this.bullets.push({ x: this.player.x, y: this.player.y });
+    }
+  }, 333);
+}
+
+// stop auto fire when game ends
+stopAutoFire() {
+  if (this.autoFireInterval) {
+    clearInterval(this.autoFireInterval);
+    this.autoFireInterval = null;
+  }
+}
+
 }

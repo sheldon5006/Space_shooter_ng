@@ -24,6 +24,22 @@
     <!-- Show canvas only when screen equals 'game' -->
     @if (screen === 'game') {
       <canvas #gameCanvas width="800" height="600"></canvas>
+
+       <!-- joystick style slider -->
+      <div class="slider-container">
+        <span class="slider-label">◀</span>
+        <input
+          type="range"
+          min="15"
+          max="785"
+          [value]="player_x"
+          (input)="onSliderMove($event)"
+          class="touch-slider"
+        />
+        <span class="slider-label">▶</span>
+      </div>
+
+      <label>Use the slider to move the player also you can use A and D keys to move the player and SPACE to shoot faster</label>
     }
 
     <!-- ======================== -->
