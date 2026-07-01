@@ -192,7 +192,9 @@ export class App implements OnInit {
   // ============================
 
   update(timestamp: number) {
+     if (!this.canvasRef) return;
     const canvas = this.canvasRef.nativeElement;
+    if (!canvas) return;
 
     // move player left if A is held
     if (this.keys['KeyA'] && this.player.x - this.player.width / 2 > 0) {
@@ -280,9 +282,14 @@ export class App implements OnInit {
   // ============================
 
   draw() {
+    
+    if (!this.canvasRef) return;
     const canvas = this.canvasRef.nativeElement;
+    if (!canvas || !this.ctx) return;
+
     const ctx = this.ctx;
 
+    
     // wipe the canvas white every frame
     ctx.fillStyle = 'white';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
