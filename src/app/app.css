@@ -135,7 +135,6 @@
 .game-area > label {
   display: block;
   width: min(100%, 800px);
-  max-width: 800px;
   color: #111 !important;
   font: clamp(10px, .9vw, 13px)/1.35 Arial, sans-serif;
   text-align: center;
@@ -148,7 +147,6 @@
   max-height: 100%;
   overflow-x: hidden;
   overflow-y: auto;
-  overscroll-behavior: contain;
 }
 .sidebar h2 { font-size: 1.1rem; }
 .sidebar ol { padding-left: 18px; }
